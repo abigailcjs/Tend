@@ -1,0 +1,385 @@
+@import "tailwindcss";
+
+/* ===========================================================
+   Tend — Design Tokens
+   Three aesthetic systems × light/dark, swapped via data attrs.
+   =========================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap");
+
+:root {
+  --font-display: "Instrument Serif", "Newsreader", Georgia, serif;
+  --font-body: "Geist", -apple-system, "SF Pro Text", system-ui, sans-serif;
+  --font-serif: "Newsreader", "Instrument Serif", Georgia, serif;
+  --tap: 44px;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* ───────── Grove (dark organic) ───────── */
+[data-aesthetic="grove"][data-dark="1"] {
+  --bg:        #14191a;
+  --bg-grad:   radial-gradient(ellipse at 30% 0%, #1f2a23 0%, #14191a 60%);
+  --bg-2:      #1c2322;
+  --bg-3:      #252d2b;
+  --text:      #efe9d8;
+  --text-2:    rgba(239, 233, 216, 0.62);
+  --text-3:    rgba(239, 233, 216, 0.36);
+  --hairline:  rgba(239, 233, 216, 0.09);
+  --accent:    #c4a878;
+  --accent-soft: rgba(196, 168, 120, 0.18);
+  --sage:      #9aaa7e;
+  --clay:      #c97b5a;
+  --ink:       #efe9d8;
+  --shadow:    0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+[data-aesthetic="grove"][data-dark="0"] {
+  --bg:        #e8e6d8;
+  --bg-grad:   radial-gradient(ellipse at 30% 0%, #f0eddc 0%, #e8e6d8 60%);
+  --bg-2:      #f3f0e2;
+  --bg-3:      #f8f6e9;
+  --text:      #1a201a;
+  --text-2:    rgba(26, 32, 26, 0.6);
+  --text-3:    rgba(26, 32, 26, 0.34);
+  --hairline:  rgba(26, 32, 26, 0.09);
+  --accent:    #6b5630;
+  --accent-soft: rgba(107, 86, 48, 0.12);
+  --sage:      #4a5a3a;
+  --clay:      #8a4a30;
+  --ink:       #1a201a;
+  --shadow:    0 12px 40px rgba(26, 32, 26, 0.08);
+}
+
+/* ───────── Paper (warm journal) ───────── */
+[data-aesthetic="paper"][data-dark="0"] {
+  --bg:        #f1e8d4;
+  --bg-grad:   radial-gradient(ellipse at 30% 0%, #f6eedb 0%, #f1e8d4 60%);
+  --bg-2:      #faf3e1;
+  --bg-3:      #fdf8eb;
+  --text:      #2a1f10;
+  --text-2:    rgba(42, 31, 16, 0.62);
+  --text-3:    rgba(42, 31, 16, 0.36);
+  --hairline:  rgba(42, 31, 16, 0.11);
+  --accent:    #a86a4e;
+  --accent-soft: rgba(168, 106, 78, 0.13);
+  --sage:      #7a8a5e;
+  --clay:      #a86a4e;
+  --ink:       #2a1f10;
+  --shadow:    0 12px 40px rgba(42, 31, 16, 0.1);
+}
+
+[data-aesthetic="paper"][data-dark="1"] {
+  --bg:        #181208;
+  --bg-grad:   radial-gradient(ellipse at 30% 0%, #221a0e 0%, #181208 60%);
+  --bg-2:      #221a0e;
+  --bg-3:      #2c2316;
+  --text:      #f1e8d4;
+  --text-2:    rgba(241, 232, 212, 0.6);
+  --text-3:    rgba(241, 232, 212, 0.34);
+  --hairline:  rgba(241, 232, 212, 0.09);
+  --accent:    #d49870;
+  --accent-soft: rgba(212, 152, 112, 0.16);
+  --sage:      #a8b890;
+  --clay:      #d49870;
+  --ink:       #f1e8d4;
+  --shadow:    0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ───────── Minimal (crisp) ───────── */
+[data-aesthetic="minimal"][data-dark="0"] {
+  --bg:        #fafaf8;
+  --bg-grad:   linear-gradient(180deg, #ffffff 0%, #fafaf8 100%);
+  --bg-2:      #ffffff;
+  --bg-3:      #f3f3f0;
+  --text:      #15171a;
+  --text-2:    rgba(21, 23, 26, 0.56);
+  --text-3:    rgba(21, 23, 26, 0.3);
+  --hairline:  rgba(21, 23, 26, 0.08);
+  --accent:    var(--accent-override, #4a5a3a);
+  --accent-soft: color-mix(in oklab, var(--accent) 14%, transparent);
+  --sage:      var(--accent);
+  --clay:      var(--accent);
+  --ink:       #15171a;
+  --shadow:    0 10px 30px rgba(21, 23, 26, 0.06);
+}
+
+[data-aesthetic="minimal"][data-dark="1"] {
+  --bg:        #0d0e0f;
+  --bg-grad:   linear-gradient(180deg, #14161a 0%, #0d0e0f 100%);
+  --bg-2:      #16181b;
+  --bg-3:      #20232a;
+  --text:      #f4f3ee;
+  --text-2:    rgba(244, 243, 238, 0.58);
+  --text-3:    rgba(244, 243, 238, 0.32);
+  --hairline:  rgba(244, 243, 238, 0.08);
+  --accent:    var(--accent-override, #c4a878);
+  --accent-soft: color-mix(in oklab, var(--accent) 18%, transparent);
+  --sage:      var(--accent);
+  --clay:      var(--accent);
+  --ink:       #f4f3ee;
+  --shadow:    0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ===========================================================
+   Base
+   =========================================================== */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  font-family: var(--font-body);
+  background: #0a0a0a;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.tend-app {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg-grad, var(--bg));
+  position: relative;
+  overflow: hidden;
+  letter-spacing: -0.01em;
+}
+
+.tend-app[data-body-serif="1"] {
+  --font-body: var(--font-serif);
+}
+
+/* ===========================================================
+   Reusable
+   =========================================================== */
+.serif { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.015em; }
+.italic-soft { font-style: italic; }
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+.divider-dot { color: var(--text-3); margin: 0 8px; }
+
+.hairline { border-bottom: 0.5px solid var(--hairline); }
+
+button.tend-btn {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+  background: var(--ink);
+  color: var(--bg);
+  border: 0;
+  border-radius: 999px;
+  padding: 16px 28px;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+}
+
+button.tend-btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 0.5px solid var(--hairline);
+}
+
+/* ===========================================================
+   Tab bar
+   =========================================================== */
+.tend-tabbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-bottom: 34px;
+  padding-top: 8px;
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  background: linear-gradient(180deg, transparent 0%, var(--bg) 30%);
+  z-index: 40;
+}
+.tend-tabbar button {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  padding: 6px 0 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: var(--text-3);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.tend-tabbar button[data-active="1"] { color: var(--text); }
+
+/* ===========================================================
+   Breath animation (centering block)
+   =========================================================== */
+@keyframes tend-breathe {
+  0%, 100% { transform: scale(0.85); opacity: 0.5; }
+  50% { transform: scale(1.0); opacity: 1; }
+}
+.tend-breath {
+  animation: tend-breathe 8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* ===========================================================
+   Sequential reveal
+   =========================================================== */
+@keyframes tend-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.tend-rise {
+  animation: tend-rise 0.9s var(--ease) both;
+}
+
+@keyframes tend-fade-slow {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.tend-fade { animation: tend-fade-slow 1.4s ease-out both; }
+
+/* ===========================================================
+   Habit row
+   =========================================================== */
+.tend-habit {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  cursor: pointer;
+  position: relative;
+}
+.tend-habit + .tend-habit::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 20px; right: 20px;
+  height: 0.5px;
+  background: var(--hairline);
+}
+.tend-check {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 1.25px solid var(--text-3);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s var(--ease);
+}
+.tend-check[data-done="1"] {
+  background: var(--text);
+  border-color: var(--text);
+}
+
+/* ===========================================================
+   Scrollbar hide
+   =========================================================== */
+.no-scroll-bar::-webkit-scrollbar { display: none; }
+.no-scroll-bar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ===========================================================
+   Identity chip color dot
+   =========================================================== */
+.tend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-2);
+  letter-spacing: 0.02em;
+}
+.tend-chip .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+
+/* ===========================================================
+   Practice progress dots
+   =========================================================== */
+.tend-dots {
+  position: absolute;
+  top: 64px;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  z-index: 10;
+}
+.tend-dots i {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--text-3);
+  opacity: 0.4;
+  transition: all 0.4s var(--ease);
+  font-style: normal;
+}
+.tend-dots i[data-active="1"] {
+  background: var(--accent);
+  opacity: 1;
+  width: 18px;
+  border-radius: 4px;
+}
+.tend-dots i[data-done="1"] {
+  background: var(--text-2);
+  opacity: 0.8;
+}
+
+/* ===========================================================
+   Decorative canvas
+   =========================================================== */
+.tend-canvas {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===========================================================
+   Modal sheet
+   =========================================================== */
+.tend-sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  justify-content: stretch;
+}
+.tend-sheet-bg {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(2px);
+  animation: tend-fade-slow 0.3s ease-out;
+}
+.tend-sheet-card {
+  position: relative;
+  width: 100%;
+  background: var(--bg-2);
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  padding: 8px 0 50px;
+  animation: tend-sheet-up 0.32s var(--ease) both;
+  max-height: 80%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+@keyframes tend-sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+.tend-sheet-grip {
+  width: 36px; height: 4px;
+  background: var(--text-3);
+  opacity: 0.5;
+  border-radius: 2px;
+  margin: 6px auto 14px;
+}

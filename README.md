@@ -1,83 +1,75 @@
-# Tend
+# Tend — Next.js port
 
-A Progressive Web App that helps you build a desired self-image through daily
-practice, and reinforce it through habits that vote for the identity you're
-becoming.
+Phase A scaffold of the app described in [SPEC.md](./SPEC.md). All five Canva screens are ported to Next.js App Router + TypeScript with the design system intact (CSS variables, three aesthetics × light/dark, italic-serif gestures, `tend-fade` / `tend-rise` / `tend-breath` motion).
 
-Synthesizes *Psycho-Cybernetics* (Maltz, 1960) and *Atomic Habits* (Clear, 2018).
+## Run it
 
-> "I tend to who I'm becoming."
-
-## Status
-
-**Phase A — Foundation.** Visual shell in place; backend, auth, and PWA shell
-pending. See [SPEC.md](SPEC.md) for the full product spec and 9-phase build
-plan. See [CLAUDE.md](CLAUDE.md) for the project brief for AI assistants.
-
-## Develop
-
-```bash
+```sh
 pnpm install
-pnpm dev
+pnpm dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The design preview lives
-at [/preview](http://localhost:3000/preview).
+The tiny "tweaks" chip in the bottom-right flips aesthetic, dark mode, today-state, and triggers practice sessions. It's gated to `NODE_ENV !== 'production'`.
 
-## Build
+## What's wired
 
-```bash
-pnpm build      # production build
-pnpm start      # serve the built app locally
-pnpm lint       # ESLint
-```
+| Screen | Route |
+|---|---|
+| Today (4 states) | `/` |
+| Habits | `/habits` |
+| Journal | `/journal` |
+| Identities list | `/identities` |
+| Identity detail | `/identity/[id]` |
+| Practice flow | overlay (triggered from Today) |
 
-## Deploy (Vercel)
+Shared state lives in Zustand (`src/lib/store.ts`), persisted to localStorage so habit check-offs survive reloads.
 
-First time on this machine:
+## What's stubbed
 
-```bash
-pnpm exec vercel login         # opens browser; pick the right account
-pnpm exec vercel link          # picks/creates the Vercel project
-```
+- **Data:** in-memory demo data in `src/lib/demo-data.ts` (mirrors the prototype). The `src/lib/data-source.ts` adapter is the seam: screens read through it; when `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set, swap the bodies for real queries.
+- **Auth:** Supabase magic-link not wired yet (Phase A end goal).
+- **Notifications:** manifest is in place; service worker is minimal. Web Push lands in Phase G.
 
-Then either of:
+## What's ready to attach
 
-```bash
-pnpm deploy                    # preview deploy
-pnpm deploy:prod               # production deploy
-```
+- **Drizzle schema:** `db/schema.ts` — mirrors the data model in SPEC.md.
+- **SQL migration:** `supabase/migrations/0001_initial.sql` — tables + enums + RLS policies (owner-only, joined through identities).
+- **Streak math:** `src/lib/streak.ts` — Clear's "never miss twice" rule, scheduled-days aware.
 
-After `vercel link`, a `.vercel/` directory is created locally. It's
-gitignored — each contributor links their own checkout. The Vercel project
-itself remains shared.
-
-For CI / non-interactive deploys, set `VERCEL_TOKEN` and pass
-`--token=$VERCEL_TOKEN` to the `vercel` invocations.
-
-## Stack
-
-Locked choices, see SPEC.md § *Technical stack* for the full list.
-
-- Next.js 16 (App Router, Turbopack) + React 19 + TypeScript
-- Tailwind CSS 4 (CSS-first `@theme` config, no `tailwind.config.ts`)
-- Framer Motion for `tend-fade` / `tend-rise` / `tend-breath`
-- Supabase (Postgres + Auth + RLS + Storage) — *not yet wired*
-- Drizzle ORM — *not yet wired*
-- TanStack Query + Zustand — *not yet wired*
-- `next-pwa` / `@serwist/next` — *not yet wired*
-
-## Repo layout
+## Project layout
 
 ```
-canva/             Canva-exported JSX — the canonical visual reference
-src/app/           Next.js App Router
-  globals.css      Design tokens (CSS vars) + utility classes + keyframes
-  layout.tsx       Root layout + next/font wiring
-  page.tsx         Landing → links to /preview
-  preview/         Static port of canva/today.jsx (will move/delete in Phase C)
-public/            Static assets
-SPEC.md            Product spec, data model, voice, build plan
-CLAUDE.md          AI-assistant brief
-AGENTS.md          Next.js 16 specific guidance for code agents
+src/
+  app/
+    layout.tsx        # root shell
+    page.tsx          # Today
+    habits/page.tsx
+    journal/page.tsx
+    identities/page.tsx
+    identity/[id]/page.tsx
+    globals.css       # design tokens, motion classes
+  components/
+    app-shell.tsx     # phone-style frame, tab bar, profile sheet, practice overlay
+    tab-bar.tsx
+    profile-sheet.tsx
+    dev-tweaks.tsx    # floating dev panel (NODE_ENV gated)
+    icons.tsx         # the line icon set
+    service-worker.tsx
+    today/today.tsx
+    habits/habits.tsx
+    journal/journal.tsx
+    identity/identity-detail.tsx
+    identity/identities-list.tsx
+    practice/practice.tsx
+    practice/blocks.tsx   # all 9 block types
+  lib/
+    types.ts
+    demo-data.ts
+    store.ts          # Zustand + localStorage persist
+    streak.ts         # never-miss-twice math
+    data-source.ts    # demo ↔ Supabase swap point
+db/schema.ts
+supabase/migrations/0001_initial.sql
+public/manifest.webmanifest
+public/sw.js
 ```

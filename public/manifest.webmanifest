@@ -1,0 +1,18 @@
+{
+  "name": "Tend",
+  "short_name": "Tend",
+  "description": "I tend to who I’m becoming.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#14191a",
+  "theme_color": "#14191a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
